@@ -16,6 +16,7 @@ class Player {
         
         std::string getName() const;
         std::string getRole() const;
+        int getNinjaLevel() const;
 };
 
 #endif // PLAYER_H

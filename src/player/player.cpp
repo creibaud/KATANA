@@ -20,3 +20,7 @@ std::string Player::getName() const {
 std::string Player::getRole() const {
     return this->role.getName();
 }
+
+int Player::getNinjaLevel() const {
+    return this->role.getLevel();
+}
