@@ -1,7 +1,7 @@
-#ifndef CHARACTER_CARD_H
-#define CHARACTER_CARD_H
+#ifndef TYPE_CHARACTER_CARD_H
+#define TYPE_CHARACTER_CARD_H
 
-enum class CharacterCard {
+enum class TypeCharacterCard {
     HANZO,
     USHIWAKA,
     CHIYOME,
@@ -16,4 +16,4 @@ enum class CharacterCard {
     KOJIRO
 };
 
-#endif // CHARACTER_CARD_H
+#endif // TYPE_CHARACTER_CARD_H

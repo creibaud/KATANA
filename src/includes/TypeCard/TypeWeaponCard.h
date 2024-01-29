@@ -1,7 +1,7 @@
-#ifndef WEAPON_CARD_H
-#define WEAPON_CARD_H
+#ifndef TYPE_WEAPON_CARD_H
+#define TYPE_WEAPON_CARD_H
 
-enum class WeaponCard {
+enum class TypeWeaponCard {
     NODACHI,
     NAGINATA,
     NAGAYARI,
@@ -17,4 +17,4 @@ enum class WeaponCard {
     WAKIZASHI
 };
 
-#endif // WEAPON_CARD_H
+#endif // TYPE_WEAPON_CARD_H

@@ -1,7 +1,7 @@
-#ifndef ACTION_CARD_H
-#define ACTION_CARD_H
+#ifndef TYPE_ACTION_CARD_H
+#define TYPE_ACTION_CARD_H
 
-enum class ActionCard {
+enum class TypeActionCard {
     CRI_DE_GUERRE,
     DAIMYO,
     DIVERSION,
@@ -12,4 +12,4 @@ enum class ActionCard {
     JU_JITSU
 };
 
-#endif // ACTION_CARD_H
+#endif // TYPE_ACTION_CARD_H
