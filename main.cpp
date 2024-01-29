@@ -3,7 +3,7 @@
 #include "src/includes/InitCard.h"
 
 int main() {
-    std::vector<Card*> cards;
+    std::vector<Card> cards;
 
     cards.push_back(Shogun);
     cards.push_back(Samurai);
