@@ -12,7 +12,7 @@ class CharacterCard : public SpecialCard {
         int maxHP;
 
     public:
-        CharacterCard(const TypeCharacterCard &character, const int &maxHP);
+        CharacterCard(const TypeCharacterCard &character, const int maxHP);
         void specialAction() override;
 };
 

@@ -11,7 +11,7 @@ class WeaponCard : public Card {
         int scope;
 
     public:
-        WeaponCard(const TypeWeaponCard &_weapon, const int _dmg, const int _scope);
+        WeaponCard(const TypeWeaponCard &weapon, const int dmg, const int scope);
         std::string getName() override;
         TypeWeaponCard getWeapon() const;
         int getDmg() const;

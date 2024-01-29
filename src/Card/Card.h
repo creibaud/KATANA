@@ -9,7 +9,7 @@ class Card {
         TypeCard type;
     
     public:
-        Card(const TypeCard &_type);
+        Card(const TypeCard &type);
         virtual std::string getName();
         TypeCard getType() const;
 };

@@ -1,7 +1,7 @@
 #include "WeaponCard.h"
 
-WeaponCard::WeaponCard(const TypeWeaponCard &_weapon, const int _dmg, const int _scope) 
-    : Card(TypeCard::WEAPON), weapon(_weapon), dmg(_dmg), scope(_scope) {
+WeaponCard::WeaponCard(const TypeWeaponCard &weapon, const int dmg, const int scope) 
+    : Card(TypeCard::WEAPON), weapon(weapon), dmg(dmg), scope(scope) {
 }
 
 std::string WeaponCard::getName() {

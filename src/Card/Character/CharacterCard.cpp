@@ -1,6 +1,6 @@
 #include "CharacterCard.h"
 
-CharacterCard::CharacterCard(const TypeCharacterCard &character, const int &maxHP) 
+CharacterCard::CharacterCard(const TypeCharacterCard &character, const int maxHP) 
     : SpecialCard(TypeCard::CHARACTER), character(character), HP(maxHP), maxHP(maxHP) {
 }
 

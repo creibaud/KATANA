@@ -1,7 +1,7 @@
 #include "RoleCard.h"
 
-RoleCard::RoleCard(const TypeRoleCard &_role, const int _level) 
-    : Card(TypeCard::ROLE), role(_role) {
+RoleCard::RoleCard(const TypeRoleCard &role, const int level) 
+    : Card(TypeCard::ROLE), role(role) {
 }
 
 std::string RoleCard::getName() {

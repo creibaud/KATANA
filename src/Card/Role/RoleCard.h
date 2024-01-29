@@ -10,7 +10,7 @@ class RoleCard : public Card {
         int level;
     
     public:
-        RoleCard(const TypeRoleCard &_role, const int _level = -1);
+        RoleCard(const TypeRoleCard &role, const int level = -1);
         std::string getName() override;
         TypeRoleCard getRole() const;
 };

@@ -1,7 +1,7 @@
 #include "Card.h"
 
-Card::Card(const TypeCard &_type) 
-    : type(_type) {
+Card::Card(const TypeCard &type) 
+    : type(type) {
 }
 
 std::string Card::getName() {
