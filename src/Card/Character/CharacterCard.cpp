@@ -1,11 +1,11 @@
 #include "CharacterCard.h"
 
-CharacterCard::CharacterCard(const TypeCharacterCard typeName, const int maxHP) 
-    : SpecialCard(TypeCard::CHARACTER), typeName(typeName), HP(maxHP), maxHP(maxHP) {
+CharacterCard::CharacterCard(const TypeCharacterCard characterType, const int maxHP) 
+    : SpecialCard(TypeCard::CHARACTER), characterType(characterType), HP(maxHP), maxHP(maxHP) {
 }
 
 std::string CharacterCard::getName() {
-    switch (this->typeName) {
+    switch (this->characterType) {
         case TypeCharacterCard::HANZO:
             return "Hanzo";
         case TypeCharacterCard::USHIWAKA:
@@ -36,7 +36,7 @@ std::string CharacterCard::getName() {
 }
 
 void CharacterCard::specialAction() {
-    switch (this->typeName) {
+    switch (this->characterType) {
         case TypeCharacterCard::HANZO:
             hanzo();
             break;

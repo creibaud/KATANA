@@ -7,10 +7,10 @@
 
 class ActionCard : public SpecialCard {
     private:
-        TypeActionCard typeName;
+        TypeActionCard actionType;
 
     public:
-        ActionCard(const TypeActionCard typeName);
+        ActionCard(const TypeActionCard actionType);
         std::string getName() override;
         void specialAction() override;
 };

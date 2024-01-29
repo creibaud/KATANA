@@ -1,11 +1,11 @@
 #include "WeaponCard.h"
 
-WeaponCard::WeaponCard(const TypeWeaponCard typeName, const int dmg, const int scope) 
-    : Card(TypeCard::WEAPON), typeName(typeName), dmg(dmg), scope(scope) {
+WeaponCard::WeaponCard(const TypeWeaponCard weaponType, const int dmg, const int scope) 
+    : Card(TypeCard::WEAPON), weaponType(weaponType), dmg(dmg), scope(scope) {
 }
 
 std::string WeaponCard::getName() {
-    switch (this->typeName) {
+    switch (this->weaponType) {
         case TypeWeaponCard::NODACHI:
             return "Nodachi";
         case TypeWeaponCard::NAGINATA:

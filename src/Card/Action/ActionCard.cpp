@@ -1,11 +1,11 @@
 #include "ActionCard.h"
 
-ActionCard::ActionCard(const TypeActionCard typeName) 
-    : SpecialCard(TypeCard::ACTION), typeName(typeName) {
+ActionCard::ActionCard(const TypeActionCard actionType) 
+    : SpecialCard(TypeCard::ACTION), actionType(actionType) {
 }
 
 std::string ActionCard::getName() {
-    switch (this->typeName) {
+    switch (this->actionType) {
         case TypeActionCard::CRI_DE_GUERRE:
             return "Cri de guerre";
         case TypeActionCard::DAIMYO:
@@ -28,7 +28,7 @@ std::string ActionCard::getName() {
 }
 
 void ActionCard::specialAction() {
-    switch (this->typeName) {
+    switch (this->actionType) {
         case TypeActionCard::CRI_DE_GUERRE:
             criDeGuerre();
             break;

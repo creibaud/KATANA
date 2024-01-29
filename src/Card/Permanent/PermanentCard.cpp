@@ -1,11 +1,11 @@
 #include "PermanentCard.h"
 
-PermanentCard::PermanentCard(const TypePermanentCard typeName) 
-    : SpecialCard(TypeCard::PERMANENT), typeName(typeName) {
+PermanentCard::PermanentCard(const TypePermanentCard permanentType) 
+    : SpecialCard(TypeCard::PERMANENT), permanentType(permanentType) {
 }
 
 std::string PermanentCard::getName() {
-    switch (this->typeName) {
+    switch (this->permanentType) {
         case TypePermanentCard::ATTAQUE_RAPIDE:
             return "Attaque rapide";
         case TypePermanentCard::CODE_DU_BUSHIDO:
@@ -20,7 +20,7 @@ std::string PermanentCard::getName() {
 }
 
 void PermanentCard::specialAction() {
-    switch (this->typeName) {
+    switch (this->permanentType) {
         case TypePermanentCard::ATTAQUE_RAPIDE:
             attaqueRapide();
             break;
