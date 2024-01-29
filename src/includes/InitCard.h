@@ -3,6 +3,7 @@
 
 #include "../Card/Role/RoleCard.h"
 #include "../Card/Action/ActionCard.h"
+#include "../Card/Permanent/PermanentCard.h"
 #include "../Card/Weapon/WeaponCard.h"
 #include "../Card/Character/CharacterCard.h"
 
@@ -21,6 +22,11 @@
 #define Parade ActionCard(TypeActionCard::PARADE)
 #define CeremonieDuThe ActionCard(TypeActionCard::CEREMONIE_DU_THE)
 #define JuJitsu ActionCard(TypeActionCard::JU_JITSU)
+
+#define AttaqueRapide PermanentCard(TypePermanentCard::ATTAQUE_RAPIDE)
+#define CodeDuBushido PermanentCard(TypePermanentCard::CODE_DU_BUSHIDO)
+#define Armure PermanentCard(TypePermanentCard::ARMURE)
+#define Concentration PermanentCard(TypePermanentCard::CONCENTRATION)
 
 #define Nodachi WeaponCard(TypeWeaponCard::NODACHI, 3, 3)
 #define Naginata WeaponCard(TypeWeaponCard::NAGINATA, 1, 4)
