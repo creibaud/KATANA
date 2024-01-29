@@ -1,33 +1,33 @@
 #include "ActionBonus.h"
 
-void criDeGuerre() {
+void ActionBonus::criDeGuerre() {
 
 }
 
-void daimyo() {
+void ActionBonus::daimyo() {
 
 }
 
-void diversion() {
+void ActionBonus::diversion() {
 
 }
 
-void geisha() {
+void ActionBonus::geisha() {
 
 }
 
-void meditation() {
+void ActionBonus::meditation() {
 
 }
 
-void parade() {
+void ActionBonus::parade() {
 
 }
 
-void ceremonieDuThe() {
+void ActionBonus::ceremonieDuThe() {
 
 }
 
-void juJitsu() {
+void ActionBonus::juJitsu() {
 
 }

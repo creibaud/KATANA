@@ -30,28 +30,28 @@ std::string ActionCard::getName() {
 void ActionCard::specialAction() {
     switch (this->actionType) {
         case TypeActionCard::CRI_DE_GUERRE:
-            criDeGuerre();
+            this->bonus.criDeGuerre();
             break;
         case TypeActionCard::DAIMYO:
-            daimyo();
+            this->bonus.daimyo();
             break;
         case TypeActionCard::DIVERSION:
-            diversion();
+            this->bonus.diversion();
             break;
         case TypeActionCard::GEISHA:
-            geisha();
+            this->bonus.geisha();
             break;
         case TypeActionCard::MEDITATION:
-            meditation();
+            this->bonus.meditation();
             break;
         case TypeActionCard::PARADE:
-            parade();
+            this->bonus.parade();
             break;
         case TypeActionCard::CEREMONIE_DU_THE:
-            ceremonieDuThe();
+            this->bonus.ceremonieDuThe();
             break;
         case TypeActionCard::JU_JITSU:
-            juJitsu();
+            this->bonus.juJitsu();
             break;
         default:
             break;

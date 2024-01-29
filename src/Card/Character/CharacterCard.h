@@ -10,6 +10,7 @@ class CharacterCard : public SpecialCard {
         TypeCharacterCard characterType;
         int HP;
         int maxHP;
+        CharacterBonus bonus;
 
     public:
         CharacterCard(const TypeCharacterCard characterType, const int maxHP);

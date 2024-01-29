@@ -38,40 +38,40 @@ std::string CharacterCard::getName() {
 void CharacterCard::specialAction() {
     switch (this->characterType) {
         case TypeCharacterCard::HANZO:
-            hanzo();
+            this->bonus.hanzo();
             break;
         case TypeCharacterCard::USHIWAKA:
-            ushiwaka();
+            this->bonus.ushiwaka();
             break;
         case TypeCharacterCard::CHIYOME:
-            chiyome();
+            this->bonus.chiyome();
             break;
         case TypeCharacterCard::HIDEYOSHI:
-            hideyoshi();
+            this->bonus.hideyoshi();
             break;
         case TypeCharacterCard::GINCHIYO:
-            ginchiyo();
+            this->bonus.ginchiyo();
             break;
         case TypeCharacterCard::GOEMON:
-            goemon();
+            this->bonus.goemon();
             break;
         case TypeCharacterCard::NOBUNAGA:
-            nobunaga();
+            this->bonus.nobunaga();
             break;
         case TypeCharacterCard::TOMOE:
-            tomoe();
+            this->bonus.tomoe();
             break;
         case TypeCharacterCard::IEYASU:
-            ieyasu();
+            this->bonus.ieyasu();
             break;
         case TypeCharacterCard::BENKEI:
-            benkei();
+            this->bonus.benkei();
             break;
         case TypeCharacterCard::MUSASHI:
-            musashi();
+            this->bonus.musashi();
             break;
         case TypeCharacterCard::KOJIRO:
-            kojiro();
+            this->bonus.kojiro();
             break;
         default:
             break;

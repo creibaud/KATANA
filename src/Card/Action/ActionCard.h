@@ -8,6 +8,7 @@
 class ActionCard : public SpecialCard {
     private:
         TypeActionCard actionType;
+        ActionBonus bonus;
 
     public:
         ActionCard(const TypeActionCard actionType);

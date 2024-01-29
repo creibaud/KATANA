@@ -22,16 +22,16 @@ std::string PermanentCard::getName() {
 void PermanentCard::specialAction() {
     switch (this->permanentType) {
         case TypePermanentCard::ATTAQUE_RAPIDE:
-            attaqueRapide();
+            this->bonus.attaqueRapide();
             break;
         case TypePermanentCard::CODE_DU_BUSHIDO:
-            codeDuBushido();
+            this->bonus.codeDuBushido();
             break;
         case TypePermanentCard::ARMURE:
-            armure();
+            this->bonus.armure();
             break;
         case TypePermanentCard::CONCENTRATION:
-            concentration();
+            this->bonus.concentration();
             break;
         default:
             break;

@@ -1,17 +1,17 @@
 #include "PermanentBonus.h"
 
-void attaqueRapide() {
+void PermanentBonus::attaqueRapide() {
 
 }
 
-void codeDuBushido() {
+void PermanentBonus::codeDuBushido() {
 
 }
 
-void armure() {
+void PermanentBonus::armure() {
 
 }
 
-void concentration() {
+void PermanentBonus::concentration() {
 
 }

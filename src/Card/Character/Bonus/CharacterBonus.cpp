@@ -1,49 +1,49 @@
 #include "CharacterBonus.h"
 
-void hanzo() {
+void CharacterBonus::hanzo() {
 
 }
 
-void ushiwaka() {
+void CharacterBonus::ushiwaka() {
 
 }
 
-void chiyome() {
+void CharacterBonus::chiyome() {
 
 }
 
-void hideyoshi() {
+void CharacterBonus::hideyoshi() {
 
 }
 
-void ginchiyo() {
+void CharacterBonus::ginchiyo() {
 
 }
 
-void goemon() {
+void CharacterBonus::goemon() {
 
 }
 
-void nobunaga() {
+void CharacterBonus::nobunaga() {
 
 }
 
-void tomoe() {
+void CharacterBonus::tomoe() {
 
 }
 
-void ieyasu() {
+void CharacterBonus::ieyasu() {
 
 }
 
-void benkei() {
+void CharacterBonus::benkei() {
 
 }
 
-void musashi() {
+void CharacterBonus::musashi() {
 
 }
 
-void kojiro() {
+void CharacterBonus::kojiro() {
 
 }

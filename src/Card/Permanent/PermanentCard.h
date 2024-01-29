@@ -8,6 +8,7 @@
 class PermanentCard : public SpecialCard {
     private:
         TypePermanentCard permanentType;
+        PermanentBonus bonus;
 
     public:
         PermanentCard(const TypePermanentCard permanentType);
