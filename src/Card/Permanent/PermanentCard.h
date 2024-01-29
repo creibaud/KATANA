@@ -7,10 +7,11 @@
 
 class PermanentCard : public SpecialCard {
     private:
-        TypePermanentCard permanent;
+        TypePermanentCard typeName;
 
     public:
-        PermanentCard(const TypePermanentCard &permanent);
+        PermanentCard(const TypePermanentCard typeName);
+        std::string getName() override;
         void specialAction() override;
 };
 

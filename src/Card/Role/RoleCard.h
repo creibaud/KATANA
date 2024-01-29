@@ -6,13 +6,12 @@
 
 class RoleCard : public Card {
     private:
-        TypeRoleCard role;
+        TypeRoleCard typeName;
         int level;
     
     public:
-        RoleCard(const TypeRoleCard &role, const int level = -1);
+        RoleCard(const TypeRoleCard typeName, const int level = -1);
         std::string getName() override;
-        TypeRoleCard getRole() const;
 };
 
 #endif // ROLE_CARD_H

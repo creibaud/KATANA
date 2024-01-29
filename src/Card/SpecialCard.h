@@ -5,7 +5,7 @@
 
 class SpecialCard : public Card {
     public:
-        SpecialCard(const TypeCard &type);
+        SpecialCard(const TypeCard type);
         virtual void specialAction();
 };
 

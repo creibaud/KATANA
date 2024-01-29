@@ -7,12 +7,13 @@
 
 class CharacterCard : public SpecialCard {
     private:
-        TypeCharacterCard character;
+        TypeCharacterCard typeName;
         int HP;
         int maxHP;
 
     public:
-        CharacterCard(const TypeCharacterCard &character, const int maxHP);
+        CharacterCard(const TypeCharacterCard typeName, const int maxHP);
+        std::string getName() override;
         void specialAction() override;
 };
 

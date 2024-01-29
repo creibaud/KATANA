@@ -1,6 +1,6 @@
 #include "Card.h"
 
-Card::Card(const TypeCard &type) 
+Card::Card(const TypeCard type) 
     : type(type) {
 }
 

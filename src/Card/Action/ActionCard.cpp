@@ -1,11 +1,34 @@
 #include "ActionCard.h"
 
-ActionCard::ActionCard(const TypeActionCard &action) 
-    : SpecialCard(TypeCard::ACTION), action(action) {
+ActionCard::ActionCard(const TypeActionCard typeName) 
+    : SpecialCard(TypeCard::ACTION), typeName(typeName) {
+}
+
+std::string ActionCard::getName() {
+    switch (this->typeName) {
+        case TypeActionCard::CRI_DE_GUERRE:
+            return "Cri de guerre";
+        case TypeActionCard::DAIMYO:
+            return "Daimyo";
+        case TypeActionCard::DIVERSION:
+            return "Diversion";
+        case TypeActionCard::GEISHA:
+            return "Geisha";
+        case TypeActionCard::MEDITATION:
+            return "Meditation";
+        case TypeActionCard::PARADE:
+            return "Parade";
+        case TypeActionCard::CEREMONIE_DU_THE:
+            return "Ceremonie du the";
+        case TypeActionCard::JU_JITSU:
+            return "Ju Jitsu";
+        default:
+            return "Unknown";
+    }
 }
 
 void ActionCard::specialAction() {
-    switch (this->action) {
+    switch (this->typeName) {
         case TypeActionCard::CRI_DE_GUERRE:
             criDeGuerre();
             break;

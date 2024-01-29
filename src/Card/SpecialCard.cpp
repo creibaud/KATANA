@@ -1,6 +1,6 @@
 #include "SpecialCard.h"
 
-SpecialCard::SpecialCard(const TypeCard &type) 
+SpecialCard::SpecialCard(const TypeCard type) 
     : Card(type) {
 }
 

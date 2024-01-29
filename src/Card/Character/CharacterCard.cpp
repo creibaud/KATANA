@@ -1,11 +1,42 @@
 #include "CharacterCard.h"
 
-CharacterCard::CharacterCard(const TypeCharacterCard &character, const int maxHP) 
-    : SpecialCard(TypeCard::CHARACTER), character(character), HP(maxHP), maxHP(maxHP) {
+CharacterCard::CharacterCard(const TypeCharacterCard typeName, const int maxHP) 
+    : SpecialCard(TypeCard::CHARACTER), typeName(typeName), HP(maxHP), maxHP(maxHP) {
+}
+
+std::string CharacterCard::getName() {
+    switch (this->typeName) {
+        case TypeCharacterCard::HANZO:
+            return "Hanzo";
+        case TypeCharacterCard::USHIWAKA:
+            return "Ushiwaka";
+        case TypeCharacterCard::CHIYOME:
+            return "Chiyome";
+        case TypeCharacterCard::HIDEYOSHI:
+            return "Hideyoshi";
+        case TypeCharacterCard::GINCHIYO:
+            return "Ginchiyo";
+        case TypeCharacterCard::GOEMON:
+            return "Goemon";
+        case TypeCharacterCard::NOBUNAGA:
+            return "Nobunaga";
+        case TypeCharacterCard::TOMOE:
+            return "Tomoe";
+        case TypeCharacterCard::IEYASU:
+            return "Ieyasu";
+        case TypeCharacterCard::BENKEI:
+            return "Benkei";
+        case TypeCharacterCard::MUSASHI:
+            return "Musashi";
+        case TypeCharacterCard::KOJIRO:
+            return "Kojiro";
+        default:
+            return "Unknown";
+    }
 }
 
 void CharacterCard::specialAction() {
-    switch (this->character) {
+    switch (this->typeName) {
         case TypeCharacterCard::HANZO:
             hanzo();
             break;

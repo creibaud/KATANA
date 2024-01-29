@@ -1,11 +1,11 @@
 #include "RoleCard.h"
 
-RoleCard::RoleCard(const TypeRoleCard &role, const int level) 
-    : Card(TypeCard::ROLE), role(role) {
+RoleCard::RoleCard(const TypeRoleCard typeName, const int level) 
+    : Card(TypeCard::ROLE), typeName(typeName) {
 }
 
 std::string RoleCard::getName() {
-    switch (this->role) {
+    switch (this->typeName) {
         case TypeRoleCard::SHOGUN:
             return "Shogun";
         case TypeRoleCard::SAMURAI:
@@ -17,8 +17,4 @@ std::string RoleCard::getName() {
         default:
             return "Unknown";
     }
-}
-
-TypeRoleCard RoleCard::getRole() const {
-    return this->role;
 }
