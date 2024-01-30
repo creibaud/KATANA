@@ -25,6 +25,14 @@ void Player::setDeck(std::vector<Card*> deck) {
     this->deck = deck;
 }
 
+void Player::addCardToDeck(Card* card) {
+    this->deck.push_back(card);
+}
+
+void Player::removeCardFromDeck(int index) {
+    this->deck.erase(this->deck.begin() + index);
+}
+
 Player::~Player() {
     for (int i = 0; i < this->deck.size(); i++) {
         delete this->deck[i];

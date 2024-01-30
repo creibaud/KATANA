@@ -300,18 +300,89 @@ void Game::initPlayers() {
     }
 }
 
-void Game::display() {
+void Game::recoverGameCards() {
+    for (int i = 0; i < this->gameCardsDiscard.size(); i++) {
+        this->gameCards.push_back(this->gameCardsDiscard[i]);
+    }
+
     for (int i = 0; i < this->players.size(); i++) {
-        std::cout << this->players[i]->getPseudo() << std::endl;
-        std::cout << "Role: " << this->players[i]->getRoleCard().getName() << std::endl;
-        std::cout << "Personnage: " << this->players[i]->getCharacterCard().getName() << std::endl;
-        std::cout << "HP: " << this->players[i]->HP << std::endl;
-        std::cout << "Honor Points: " << this->players[i]->honorPoints << std::endl;
-        std::cout << "Deck: " << std::endl;
-        for (int j = 0; j < this->players[i]->getDeck().size(); j++) {
-            std::cout << "-> " << this->players[i]->getDeck()[j]->getName() << std::endl;
-        }
+        this->players[i]->honorPoints -= 1;
+    }
+
+    this->gameCardsDiscard.clear();
+
+    std::shuffle(this->gameCards.begin(), this->gameCards.end(), std::random_device());
+}
+
+void Game::start() {
+    int index = 0;
+    while (true) {
+        std::cout << "Tour de " << this->players[index]->getPseudo() << std::endl;
+        this->turn(this->players[index]);
         std::cout << std::endl;
+
+        index++;
+        if (index == this->players.size()) {
+            index = 0;
+        }
+    }
+}
+
+void Game::turn(Player *player) {
+    this->recoverHP(player);
+    this->pickUpCard(player);
+    this->playCard(player);
+    this->discardCard(player);
+}
+
+void Game::recoverHP(Player *player) {
+    std::cout << "Phase 1" << std::endl;
+    if (player->HP <= 0) {
+        player->HP = player->getCharacterCard().getMaxHP();
+    }
+}
+
+void Game::pickUpCard(Player *player) {
+    std::cout << "Phase 2" << std::endl;
+    for (int i = 0; i < 2; i++) {
+        if (this->gameCards.size() == 0) {
+            this->recoverGameCards();
+        }
+
+        Card *card = this->gameCards.back();
+        this->gameCards.pop_back();
+
+        player->addCardToDeck(card);
+    }
+}
+
+void Game::playCard(Player *player) {
+    std::cout << "Phase 3" << std::endl;
+}
+
+void Game::discardCard(Player *player) {
+    std::cout << "Phase 4" << std::endl;
+    while (player->getDeck().size() > 7) {
+        try {
+            int index;
+            std::cout << "Carte à défausser: " << std::endl;
+
+            for (int i = 0; i < player->getDeck().size(); i++) {
+                std::cout << i + 1 << ": " << player->getDeck()[i]->getName() << std::endl;
+            }
+
+            std::cin >> index;
+
+            if (index < 1 || index > player->getDeck().size()) {
+                throw std::invalid_argument("L'index doit être compris entre 1 et " + player->getDeck().size());
+            }
+
+            this->gameCardsDiscard.push_back(player->getDeck()[index - 1]);
+            player->removeCardFromDeck(index - 1);
+        }
+        catch (std::invalid_argument& e) {
+            std::cout << e.what() << std::endl;
+        }
     }
 }
 

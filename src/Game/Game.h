@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
 #include <random>
 #include <algorithm>
 #include "../includes/InitCard.h"
@@ -12,13 +13,14 @@ class Game {
     private:
         std::vector<RoleCard*> roleCards;
         std::vector<Card*> gameCards;
+        std::vector<Card*> gameCardsDiscard;
         std::vector<CharacterCard*> characterCards;
-        int nbPlayers;
         std::vector<Player*> players;
+        int nbPlayers;
         
     public:
         Game();
-        
+
         void init();
         void initNbPlayers();
         void initRoleCards();
@@ -26,7 +28,14 @@ class Game {
         void initCharacterCards();
         void initPlayers();
 
-        void display();
+        void recoverGameCards();
+        
+        void start();
+        void turn(Player *player);
+        void recoverHP(Player *player);
+        void pickUpCard(Player *player);
+        void playCard(Player *player);
+        void discardCard(Player *player);
 
         ~Game();
 };

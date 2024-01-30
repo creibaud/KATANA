@@ -27,6 +27,9 @@ class Player {
         std::vector<Card*> getDeck() const;
         CharacterCard getCharacterCard() const;
 
+        void addCardToDeck(Card* card);
+        void removeCardFromDeck(int index);
+
         ~Player();
 };
 
