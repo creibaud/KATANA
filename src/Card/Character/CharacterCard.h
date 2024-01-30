@@ -8,13 +8,15 @@
 class CharacterCard : public SpecialCard {
     private:
         TypeCharacterCard characterType;
-        int HP;
         int maxHP;
         CharacterBonus bonus;
 
     public:
         CharacterCard(const TypeCharacterCard characterType, const int maxHP);
+        
         std::string getName() override;
+        int getMaxHP() const;
+
         void specialAction() override;
 };
 

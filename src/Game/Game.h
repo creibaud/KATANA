@@ -6,6 +6,7 @@
 #include <random>
 #include <algorithm>
 #include "../includes/InitCard.h"
+#include "../Player/Player.h"
 
 class Game {
     private:
@@ -13,19 +14,20 @@ class Game {
         std::vector<Card*> gameCards;
         std::vector<CharacterCard*> characterCards;
         int nbPlayers;
+        std::vector<Player*> players;
         
     public:
         Game();
+        void init();
         void initNbPlayers();
         void initRoleCards();
         void initGameCards();
         void initCharacterCards();
+        void initPlayers();
 
         void addCopyCard(Card* card, int nbCopy);
 
-        std::vector<RoleCard*> getRoleCards();
-        std::vector<Card*> getGameCards();
-        std::vector<CharacterCard*> getCharacterCards();
+        void display();
 
         ~Game();
 };

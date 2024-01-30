@@ -18,3 +18,7 @@ std::string RoleCard::getName() {
             return "Unknown";
     }
 }
+
+TypeRoleCard RoleCard::getRoleType() const {
+    return this->roleType;
+}

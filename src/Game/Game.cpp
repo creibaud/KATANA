@@ -2,6 +2,14 @@
 
 Game::Game() {}
 
+void Game::init() {
+    this->initNbPlayers();
+    this->initRoleCards();
+    this->initGameCards();
+    this->initCharacterCards();
+    this->initPlayers();
+}
+
 void Game::initNbPlayers() {
     while (true) {
         try {
@@ -21,20 +29,15 @@ void Game::initNbPlayers() {
 }
 
 void Game::initRoleCards() {
+    this->roleCards.push_back(new Shogun);
+    this->roleCards.push_back(new Samurai);
+
     switch (this->nbPlayers) {
-        case 4:
-            this->roleCards.push_back(new Shogun);
-            this->roleCards.push_back(new Samurai);
-            break;
         case 5:
         case 6:
-            this->roleCards.push_back(new Shogun);
-            this->roleCards.push_back(new Samurai);
             this->roleCards.push_back(new Ronin);
             break;
         case 7:
-            this->roleCards.push_back(new Shogun);
-            this->roleCards.push_back(new Samurai);
             this->roleCards.push_back(new Samurai);
             this->roleCards.push_back(new Ronin);
             break;
@@ -144,22 +147,106 @@ void Game::initCharacterCards() {
     std::shuffle(this->characterCards.begin(), this->characterCards.end(), std::random_device());
 }
 
+void Game::initPlayers() {
+    for (int i = 0; i < this->nbPlayers; i++) {
+        std::string pseudo;
+        std::cout << "Pseudo du joueur " << i + 1 << ": ";
+        std::cin >> pseudo;
+
+        RoleCard *roleCard = this->roleCards.back();
+        this->roleCards.pop_back();
+
+        CharacterCard *characterCard = this->characterCards.back();
+        this->characterCards.pop_back();
+
+        this->players.push_back(new Player(pseudo, *roleCard, *characterCard));
+
+        if (this->nbPlayers < 6) {
+            if (roleCard->getRoleType() != TypeRoleCard::SHOGUN) {
+                this->players[i]->honorPoints = 3;
+            }
+        } else {
+            if (roleCard->getRoleType() != TypeRoleCard::SHOGUN) {
+                this->players[i]->honorPoints = 4;
+            }
+        }
+
+        if (roleCard->getRoleType() == TypeRoleCard::SHOGUN) {
+            this->players[i]->honorPoints = 5;
+        }
+    }
+    
+    int shogunIndex = -1;
+    for (int i = 0; i < this->players.size(); i++) {
+        if (this->players[i]->getRoleCard().getRoleType() == TypeRoleCard::SHOGUN) {
+            shogunIndex = i;
+            break;
+        }
+    }
+
+    std::vector<Player*> tmpPlayers;
+    for (int i = shogunIndex; i < this->players.size(); i++) {
+        tmpPlayers.push_back(this->players[i]);
+    }
+
+    for (int i = 0; i < shogunIndex; i++) {
+        tmpPlayers.push_back(this->players[i]);
+    }
+
+    this->players = tmpPlayers;
+
+    for (int i = 0; i < this->players.size(); i++) {
+        std::vector<Card*> tmpDeck;
+        int nbCards = 0;
+
+        switch (i) {
+            case 0:
+                nbCards = 4;
+                break;
+            case 1:
+            case 2:
+                nbCards = 5;
+                break;
+            case 3:
+            case 4:
+                nbCards = 6;
+                break;
+            case 5:
+            case 6:
+                nbCards = 7;
+                break;
+            default:
+                break;
+        }
+
+        for (int j = 0; j < nbCards; j++) {
+            tmpDeck.push_back(this->gameCards.back());
+            this->gameCards.pop_back();
+        }
+
+        this->players[i]->setDeck(tmpDeck);
+    }
+}
+
 void Game::addCopyCard(Card* card, int nbCopy) {
     for (int i = 0; i < nbCopy; i++) {
         this->gameCards.push_back(card);
     }
 }
 
-std::vector<RoleCard*> Game::getRoleCards() {
-    return this->roleCards;
-}
-
-std::vector<Card*> Game::getGameCards() {
-    return this->gameCards;
-}
-
-std::vector<CharacterCard*> Game::getCharacterCards() {
-    return this->characterCards;
+void Game::display() {
+    for (int i = 0; i < this->players.size(); i++) {
+        std::cout << this->players[i]->getPseudo() << std::endl;
+        std::cout << "Role: " << this->players[i]->getRoleCard().getName() << std::endl;
+        std::cout << "Personnage: " << this->players[i]->getCharacterCard().getName() << std::endl;
+        std::cout << "HP: " << this->players[i]->HP << std::endl;
+        std::cout << "Honor Points: " << this->players[i]->honorPoints << std::endl;
+        std::cout << "Deck: " << std::endl;
+        for (int j = 0; j < this->players[i]->getDeck().size(); j++) {
+            std::cout << this->players[i]->getDeck()[j]->getName() << std::endl;
+        }
+        std::cout << std::endl;
+    }
 }
 
 Game::~Game() {
@@ -173,5 +260,9 @@ Game::~Game() {
 
     for (int i = 0; i < this->characterCards.size(); i++) {
         delete this->characterCards[i];
+    }
+
+    for (int i = 0; i < this->players.size(); i++) {
+        delete this->players[i];
     }
 }

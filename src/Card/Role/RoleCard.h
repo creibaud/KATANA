@@ -11,7 +11,9 @@ class RoleCard : public Card {
     
     public:
         RoleCard(const TypeRoleCard roleType, const int level = -1);
+        
         std::string getName() override;
+        TypeRoleCard getRoleType() const;
 };
 
 #endif // ROLE_CARD_H

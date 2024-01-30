@@ -1,7 +1,7 @@
 #include "CharacterCard.h"
 
 CharacterCard::CharacterCard(const TypeCharacterCard characterType, const int maxHP) 
-    : SpecialCard(TypeCard::CHARACTER), characterType(characterType), HP(maxHP), maxHP(maxHP) {
+    : SpecialCard(TypeCard::CHARACTER), characterType(characterType), maxHP(maxHP) {
 }
 
 std::string CharacterCard::getName() {
@@ -33,6 +33,10 @@ std::string CharacterCard::getName() {
         default:
             return "Unknown";
     }
+}
+
+int CharacterCard::getMaxHP() const {
+    return this->maxHP;
 }
 
 void CharacterCard::specialAction() {
