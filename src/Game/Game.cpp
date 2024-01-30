@@ -309,7 +309,7 @@ void Game::display() {
         std::cout << "Honor Points: " << this->players[i]->honorPoints << std::endl;
         std::cout << "Deck: " << std::endl;
         for (int j = 0; j < this->players[i]->getDeck().size(); j++) {
-            std::cout << this->players[i]->getDeck()[j]->getName() << std::endl;
+            std::cout << "-> " << this->players[i]->getDeck()[j]->getName() << std::endl;
         }
         std::cout << std::endl;
     }
