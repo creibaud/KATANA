@@ -25,8 +25,6 @@ class Game {
         void initCharacterCards();
         void initPlayers();
 
-        void addCopyCard(Card* card, int nbCopy);
-
         void display();
 
         ~Game();

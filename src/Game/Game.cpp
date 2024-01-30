@@ -99,33 +99,105 @@ void Game::initRoleCards() {
 }
 
 void Game::initGameCards() {
-    this->addCopyCard(new CriDeGuerre, NB_COPY_CRI_DE_GUERRE);
-    this->addCopyCard(new Daimyo, NB_COPY_DAIMYO);
-    this->addCopyCard(new Diversion, NB_COPY_DIVERSION);
-    this->addCopyCard(new Geisha, NB_COPY_GEISHA);
-    this->addCopyCard(new Meditation, NB_COPY_MEDITATION);
-    this->addCopyCard(new Parade, NB_COPY_PARADE);
-    this->addCopyCard(new CeremonieDuThe, NB_COPY_CEREMONIE_DU_THE);
-    this->addCopyCard(new JuJitsu, NB_COPY_JU_JITSU);
+    for (int i = 0; i < NB_COPY_CRI_DE_GUERRE; i++) {
+        this->gameCards.push_back(new CriDeGuerre);
+    }
 
-    this->addCopyCard(new AttaqueRapide, NB_COPY_ATTAQUE_RAPIDE);
-    this->addCopyCard(new CodeDuBushido, NB_COPY_CODE_DU_BUSHIDO);
-    this->addCopyCard(new Armure, NB_COPY_ARMURE);
-    this->addCopyCard(new Concentration, NB_COPY_CONCENTRATION);
-    
-    this->addCopyCard(new Nodachi, NB_COPY_NODACHI);
-    this->addCopyCard(new Naginata, NB_COPY_NAGINATA);
-    this->addCopyCard(new Nagayari, NB_COPY_NAGAYARI);
-    this->addCopyCard(new Tanegashima, NB_COPY_TANEGASHIMA);
-    this->addCopyCard(new Daikyu, NB_COPY_DAIKYU);
-    this->addCopyCard(new Bo, NB_COPY_BO);
-    this->addCopyCard(new Kusarigama, NB_COPY_KUSARIGAMA);
-    this->addCopyCard(new Katana, NB_COPY_KATANA);
-    this->addCopyCard(new Shuriken, NB_COPY_SHURIKEN);
-    this->addCopyCard(new Kanabo, NB_COPY_KANABO);
-    this->addCopyCard(new Bokken, NB_COPY_BOKKEN);
-    this->addCopyCard(new Kiseru, NB_COPY_KISERU);
-    this->addCopyCard(new Wakizashi, NB_COPY_WAKIZASHI);
+    for (int i = 0; i < NB_COPY_DAIMYO; i++) {
+        this->gameCards.push_back(new Daimyo);
+    }
+
+    for (int i = 0; i < NB_COPY_DIVERSION; i++) {
+        this->gameCards.push_back(new Diversion);
+    }
+
+    for (int i = 0; i < NB_COPY_GEISHA; i++) {
+        this->gameCards.push_back(new Geisha);
+    }
+
+    for (int i = 0; i < NB_COPY_MEDITATION; i++) {
+        this->gameCards.push_back(new Meditation);
+    }
+
+    for (int i = 0; i < NB_COPY_PARADE; i++) {
+        this->gameCards.push_back(new Parade);
+    }
+
+    for (int i = 0; i < NB_COPY_CEREMONIE_DU_THE; i++) {
+        this->gameCards.push_back(new CeremonieDuThe);
+    }
+
+    for (int i = 0; i < NB_COPY_JU_JITSU; i++) {
+        this->gameCards.push_back(new JuJitsu);
+    }
+
+    for (int i = 0; i < NB_COPY_ATTAQUE_RAPIDE; i++) {
+        this->gameCards.push_back(new AttaqueRapide);
+    }
+
+    for (int i = 0; i < NB_COPY_CODE_DU_BUSHIDO; i++) {
+        this->gameCards.push_back(new CodeDuBushido);
+    }
+
+    for (int i = 0; i < NB_COPY_ARMURE; i++) {
+        this->gameCards.push_back(new Armure);
+    }
+
+    for (int i = 0; i < NB_COPY_CONCENTRATION; i++) {
+        this->gameCards.push_back(new Concentration);
+    }
+
+    for (int i = 0; i < NB_COPY_NODACHI; i++) {
+        this->gameCards.push_back(new Nodachi);
+    }
+
+    for (int i = 0; i < NB_COPY_NAGINATA; i++) {
+        this->gameCards.push_back(new Naginata);
+    }
+
+    for (int i = 0; i < NB_COPY_NAGAYARI; i++) {
+        this->gameCards.push_back(new Nagayari);
+    }
+
+    for (int i = 0; i < NB_COPY_TANEGASHIMA; i++) {
+        this->gameCards.push_back(new Tanegashima);
+    }
+
+    for (int i = 0; i < NB_COPY_DAIKYU; i++) {
+        this->gameCards.push_back(new Daikyu);
+    }
+
+    for (int i = 0; i < NB_COPY_BO; i++) {
+        this->gameCards.push_back(new Bo);
+    }
+
+    for (int i = 0; i < NB_COPY_KUSARIGAMA; i++) {
+        this->gameCards.push_back(new Kusarigama);
+    }
+
+    for (int i = 0; i < NB_COPY_KATANA; i++) {
+        this->gameCards.push_back(new Katana);
+    }
+
+    for (int i = 0; i < NB_COPY_SHURIKEN; i++) {
+        this->gameCards.push_back(new Shuriken);
+    }
+
+    for (int i = 0; i < NB_COPY_KANABO; i++) {
+        this->gameCards.push_back(new Kanabo);
+    }
+
+    for (int i = 0; i < NB_COPY_BOKKEN; i++) {
+        this->gameCards.push_back(new Bokken);
+    }
+
+    for (int i = 0; i < NB_COPY_KISERU; i++) {
+        this->gameCards.push_back(new Kiseru);
+    }
+
+    for (int i = 0; i < NB_COPY_WAKIZASHI; i++) {
+        this->gameCards.push_back(new Wakizashi);
+    }
 
     std::shuffle(this->gameCards.begin(), this->gameCards.end(), std::random_device());
 }
@@ -228,12 +300,6 @@ void Game::initPlayers() {
     }
 }
 
-void Game::addCopyCard(Card* card, int nbCopy) {
-    for (int i = 0; i < nbCopy; i++) {
-        this->gameCards.push_back(card);
-    }
-}
-
 void Game::display() {
     for (int i = 0; i < this->players.size(); i++) {
         std::cout << this->players[i]->getPseudo() << std::endl;
@@ -250,16 +316,8 @@ void Game::display() {
 }
 
 Game::~Game() {
-    for (int i = 0; i < this->roleCards.size(); i++) {
-        delete this->roleCards[i];
-    }
-
     for (int i = 0; i < this->gameCards.size(); i++) {
         delete this->gameCards[i];
-    }
-
-    for (int i = 0; i < this->characterCards.size(); i++) {
-        delete this->characterCards[i];
     }
 
     for (int i = 0; i < this->players.size(); i++) {
