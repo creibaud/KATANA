@@ -18,6 +18,7 @@ class Game {
         
     public:
         Game();
+        
         void init();
         void initNbPlayers();
         void initRoleCards();
