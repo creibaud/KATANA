@@ -26,6 +26,8 @@ class Game {
         std::vector<RoleCard*> getRoleCards();
         std::vector<Card*> getGameCards();
         std::vector<CharacterCard*> getCharacterCards();
+
+        ~Game();
 };
 
 #endif // GAME_H

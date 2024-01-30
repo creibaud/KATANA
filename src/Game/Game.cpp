@@ -161,3 +161,17 @@ std::vector<Card*> Game::getGameCards() {
 std::vector<CharacterCard*> Game::getCharacterCards() {
     return this->characterCards;
 }
+
+Game::~Game() {
+    for (int i = 0; i < this->roleCards.size(); i++) {
+        delete this->roleCards[i];
+    }
+
+    for (int i = 0; i < this->gameCards.size(); i++) {
+        delete this->gameCards[i];
+    }
+
+    for (int i = 0; i < this->characterCards.size(); i++) {
+        delete this->characterCards[i];
+    }
+}
