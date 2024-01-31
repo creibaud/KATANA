@@ -37,6 +37,9 @@ class Game {
         void playCard(Player *player);
         void discardCard(Player *player);
 
+        void attackPlayer(Player *player);
+        int calculDistance(Player *player, Player *playerTarget);
+
         ~Game();
 };
 

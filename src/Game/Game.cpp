@@ -358,6 +358,7 @@ void Game::pickUpCard(Player *player) {
 
 void Game::playCard(Player *player) {
     std::cout << "Phase 3" << std::endl;
+    this->attackPlayer(player);
 }
 
 void Game::discardCard(Player *player) {
@@ -384,6 +385,136 @@ void Game::discardCard(Player *player) {
             std::cout << e.what() << std::endl;
         }
     }
+}
+
+void Game::attackPlayer(Player *player) {
+    std::cout << "Attack" << std::endl;
+
+    int maxAttack = 1;
+    int nbAttack = 0;
+
+    while (true) {
+        try {
+            int indexCard;
+            std::cout << "Carte à jouer: " << std::endl;
+            
+            int nbWeapon = 0;
+            for (int i = 0; i < player->getDeck().size(); i++) {
+                if (player->getDeck()[i]->getType() == TypeCard::WEAPON) {
+                    std::cout << i + 1 << ": " << player->getDeck()[i]->getName() << std::endl;
+                    nbWeapon++;
+                }
+            }
+
+            if (nbWeapon == 0) {
+                std::cout << "Vous n'avez pas de carte arme !" << std::endl;
+                break;
+            }
+
+            std::cout << "Numéro de la carte: ";
+            std::cin >> indexCard;
+
+            if (indexCard < 1 || indexCard > player->getDeck().size()) {
+                throw std::invalid_argument("L'index doit être compris entre 1 et " + player->getDeck().size());
+            }
+
+            WeaponCard *weaponCard = dynamic_cast<WeaponCard*>(player->getDeck()[indexCard - 1]);
+
+            while (true) {
+                try {
+                    int indexPlayer;
+                    std::cout << "Joueur à attaquer: " << std::endl;
+                    
+                    for (int i = 0; i < this->players.size(); i++) {
+                        if (this->players[i] != player) {
+                            std::cout << i + 1 << " " << this->players[i]->getPseudo() << " | HP = " << this->players[i]->HP << " | distance = " << this->calculDistance(player, this->players[i]) << std::endl;
+                        }
+                    }
+                    
+                    std::cout << "Numéro du joueur: ";
+                    std::cin >> indexPlayer;
+
+                    if (indexPlayer < 1 || indexPlayer > this->players.size()) {
+                        throw std::invalid_argument("L'index doit être compris entre 1 et " + this->players.size());
+                    }
+                    
+                    if (this->players[indexPlayer - 1] == player) {
+                        throw std::invalid_argument("Vous ne pouvez pas vous attaquer vous-même !");
+                    }
+
+                    if (this->calculDistance(player, this->players[indexPlayer - 1]) > weaponCard->getScope()) {
+                        throw std::invalid_argument("La distance entre vous et le joueur est trop grande !");
+                    }
+
+                    this->players[indexPlayer - 1]->HP = std::max(this->players[indexPlayer - 1]->HP - weaponCard->getDmg(), 0);
+                    this->gameCardsDiscard.push_back(player->getDeck()[indexCard - 1]);
+                    player->removeCardFromDeck(indexCard - 1);
+
+                    std::cout << "Le joueur " << this->players[indexPlayer - 1]->getPseudo() << " a maintenant " << this->players[indexPlayer - 1]->HP << " HP" << std::endl;
+                    break;
+
+                } catch (std::invalid_argument& e) {
+                    std::cout << e.what() << std::endl;
+                }
+            }
+
+            nbAttack++;
+
+            if (nbAttack == maxAttack) {
+                break;
+            }
+        }
+        catch (std::invalid_argument& e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
+}
+
+int Game::calculDistance(Player *player, Player *playerTarget) {
+    auto indexPlayer = std::find(this->players.begin(), this->players.end(), player);
+    
+    bool findPlayerTarget = false;
+    int distanceClockwise = 0;
+    for (int i = indexPlayer - this->players.begin() + 1; i < this->players.size(); i++) {
+        distanceClockwise++;
+        if (this->players[i] == playerTarget) {
+            findPlayerTarget = true;
+            break;
+        }
+    }
+
+    if (!findPlayerTarget) {
+        for (int i = 0; i < indexPlayer - this->players.begin(); i++) {
+            distanceClockwise++;
+            if (this->players[i] == playerTarget) {
+                findPlayerTarget = true;
+                break;
+            }
+        }
+    }
+
+    findPlayerTarget = false;
+    int distanceCounterClockwise = 0;
+
+    for (int i = indexPlayer - this->players.begin() - 1; i >= 0; i--) {
+        distanceCounterClockwise++;
+        if (this->players[i] == playerTarget) {
+            findPlayerTarget = true;
+            break;
+        }
+    }
+
+    if (!findPlayerTarget) {
+        for (int i = this->players.size() - 1; i > indexPlayer - this->players.begin(); i--) {
+            distanceCounterClockwise++;
+            if (this->players[i] == playerTarget) {
+                findPlayerTarget = true;
+                break;
+            }
+        }
+    }
+
+    return std::min(distanceClockwise, distanceCounterClockwise);
 }
 
 Game::~Game() {
