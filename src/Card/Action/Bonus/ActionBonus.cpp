@@ -37,7 +37,7 @@ void ActionBonus::parade() {
                 throw std::invalid_argument("Veuillez entrer une reponse valide !");
             }
         } catch (std::invalid_argument& e) {
-            std::cerr << e.what() << std::endl;
+            std::cout << e.what() << std::endl;
         }
     }
 }

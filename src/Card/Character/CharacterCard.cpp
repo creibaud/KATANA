@@ -35,6 +35,10 @@ std::string CharacterCard::getName() {
     }
 }
 
+TypeCharacterCard CharacterCard::getCharacterType() const {
+    return this->characterType;
+}
+
 int CharacterCard::getMaxHP() const {
     return this->maxHP;
 }

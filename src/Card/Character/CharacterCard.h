@@ -15,6 +15,7 @@ class CharacterCard : public SpecialCard {
         CharacterCard(const TypeCharacterCard characterType, const int maxHP);
         
         std::string getName() override;
+        TypeCharacterCard getCharacterType() const;
         int getMaxHP() const;
 
         void specialAction() override;
