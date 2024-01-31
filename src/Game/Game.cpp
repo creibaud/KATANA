@@ -358,7 +358,26 @@ void Game::pickUpCard(Player *player) {
 
 void Game::playCard(Player *player) {
     std::cout << "Phase 3" << std::endl;
-    this->attackPlayer(player);
+
+    while (true) {
+        try {
+            char answer;
+            std::cout << "Voulez-vous jouer une carte ? (O/N)" << std::endl;
+            std::cin >> answer;
+
+            if (answer != 'O' && answer != 'N') {
+                throw std::invalid_argument("La réponse doit être O ou N !");
+            }
+
+            if (answer == 'O') {
+                this->attackPlayer(player);
+            }
+            break;
+
+        } catch (std::invalid_argument& e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
 }
 
 void Game::discardCard(Player *player) {
@@ -395,76 +414,94 @@ void Game::attackPlayer(Player *player) {
 
     while (true) {
         try {
-            int indexCard;
-            std::cout << "Carte à jouer: " << std::endl;
-            
-            int nbWeapon = 0;
-            for (int i = 0; i < player->getDeck().size(); i++) {
-                if (player->getDeck()[i]->getType() == TypeCard::WEAPON) {
-                    std::cout << i + 1 << ": " << player->getDeck()[i]->getName() << std::endl;
-                    nbWeapon++;
-                }
+            char answer;
+            std::cout << "Voulez-vous attaquer ? (O/N)" << std::endl;
+            std::cin >> answer;
+
+            if (answer != 'O' && answer != 'N') {
+                throw std::invalid_argument("La réponse doit être O ou N !");
             }
 
-            if (nbWeapon == 0) {
-                std::cout << "Vous n'avez pas de carte arme !" << std::endl;
-                break;
-            }
+            if (answer == 'O') {
+                while (true) {
+                    try {
+                        int indexCard;
+                        std::cout << "Carte à jouer: " << std::endl;
+                        
+                        int nbWeapon = 0;
+                        for (int i = 0; i < player->getDeck().size(); i++) {
+                            if (player->getDeck()[i]->getType() == TypeCard::WEAPON) {
+                                std::cout << i + 1 << ": " << player->getDeck()[i]->getName() << std::endl;
+                                nbWeapon++;
+                            }
+                        }
 
-            std::cout << "Numéro de la carte: ";
-            std::cin >> indexCard;
+                        if (nbWeapon == 0) {
+                            std::cout << "Vous n'avez pas de carte arme !" << std::endl;
+                            break;
+                        }
 
-            if (indexCard < 1 || indexCard > player->getDeck().size()) {
-                throw std::invalid_argument("L'index doit être compris entre 1 et " + player->getDeck().size());
-            }
+                        std::cout << "Numéro de la carte: ";
+                        std::cin >> indexCard;
 
-            WeaponCard *weaponCard = dynamic_cast<WeaponCard*>(player->getDeck()[indexCard - 1]);
+                        if (indexCard < 1 || indexCard > player->getDeck().size()) {
+                            throw std::invalid_argument("L'index doit être compris entre 1 et " + player->getDeck().size());
+                        }
+                        
+                        WeaponCard *weaponCard = dynamic_cast<WeaponCard*>(player->getDeck()[indexCard - 1]);
 
-            while (true) {
-                try {
-                    int indexPlayer;
-                    std::cout << "Joueur à attaquer: " << std::endl;
-                    
-                    for (int i = 0; i < this->players.size(); i++) {
-                        if (this->players[i] != player) {
-                            std::cout << i + 1 << " " << this->players[i]->getPseudo() << " | HP = " << this->players[i]->HP << " | distance = " << this->calculDistance(player, this->players[i]) << std::endl;
+                        while (true) {
+                            try {
+                                int indexPlayer;
+                                std::cout << "Joueur à attaquer: " << std::endl;
+                                
+                                for (int i = 0; i < this->players.size(); i++) {
+                                    if (this->players[i] != player) {
+                                        std::cout << i + 1 << " " << this->players[i]->getPseudo() << " | HP = " << this->players[i]->HP << " | distance = " << this->calculDistance(player, this->players[i]) << std::endl;
+                                    }
+                                }
+                                
+                                std::cout << "Numéro du joueur: ";
+                                std::cin >> indexPlayer;
+
+                                if (indexPlayer < 1 || indexPlayer > this->players.size()) {
+                                    throw std::invalid_argument("L'index doit être compris entre 1 et " + this->players.size());
+                                }
+                                
+                                if (this->players[indexPlayer - 1] == player) {
+                                    throw std::invalid_argument("Vous ne pouvez pas vous attaquer vous-même !");
+                                }
+
+                                if (this->calculDistance(player, this->players[indexPlayer - 1]) > weaponCard->getScope()) {
+                                    throw std::invalid_argument("La distance entre vous et le joueur est trop grande !");
+                                }
+
+                                this->players[indexPlayer - 1]->HP = std::max(this->players[indexPlayer - 1]->HP - weaponCard->getDmg(), 0);
+                                this->gameCardsDiscard.push_back(player->getDeck()[indexCard - 1]);
+                                player->removeCardFromDeck(indexCard - 1);
+                                delete weaponCard;
+
+                                break;
+
+                            } catch (std::invalid_argument& e) {
+                                std::cout << e.what() << std::endl;
+                            }
+                        }
+
+                        nbAttack++;
+
+                        if (nbAttack == maxAttack) {
+                            break;
                         }
                     }
-                    
-                    std::cout << "Numéro du joueur: ";
-                    std::cin >> indexPlayer;
-
-                    if (indexPlayer < 1 || indexPlayer > this->players.size()) {
-                        throw std::invalid_argument("L'index doit être compris entre 1 et " + this->players.size());
+                    catch (std::invalid_argument& e) {
+                        std::cout << e.what() << std::endl;
                     }
-                    
-                    if (this->players[indexPlayer - 1] == player) {
-                        throw std::invalid_argument("Vous ne pouvez pas vous attaquer vous-même !");
-                    }
-
-                    if (this->calculDistance(player, this->players[indexPlayer - 1]) > weaponCard->getScope()) {
-                        throw std::invalid_argument("La distance entre vous et le joueur est trop grande !");
-                    }
-
-                    this->players[indexPlayer - 1]->HP = std::max(this->players[indexPlayer - 1]->HP - weaponCard->getDmg(), 0);
-                    this->gameCardsDiscard.push_back(player->getDeck()[indexCard - 1]);
-                    player->removeCardFromDeck(indexCard - 1);
-
-                    std::cout << "Le joueur " << this->players[indexPlayer - 1]->getPseudo() << " a maintenant " << this->players[indexPlayer - 1]->HP << " HP" << std::endl;
-                    break;
-
-                } catch (std::invalid_argument& e) {
-                    std::cout << e.what() << std::endl;
                 }
             }
+            break;
 
-            nbAttack++;
-
-            if (nbAttack == maxAttack) {
-                break;
-            }
-        }
-        catch (std::invalid_argument& e) {
+        } catch (std::invalid_argument& e) {
             std::cout << e.what() << std::endl;
         }
     }
