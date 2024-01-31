@@ -27,6 +27,10 @@ std::string ActionCard::getName() {
     }
 }
 
+TypeActionCard ActionCard::getActionType() const {
+    return this->actionType;
+}
+
 void ActionCard::specialAction() {
     switch (this->actionType) {
         case TypeActionCard::CRI_DE_GUERRE:

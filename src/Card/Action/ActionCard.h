@@ -13,6 +13,7 @@ class ActionCard : public SpecialCard {
     public:
         ActionCard(const TypeActionCard actionType);
         std::string getName() override;
+        TypeActionCard getActionType() const;
         void specialAction() override;
 };
 

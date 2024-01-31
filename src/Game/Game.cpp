@@ -493,8 +493,31 @@ void Game::attackPlayer(Player *player) {
                                 if (this->calculDistance(player, this->players[indexPlayer - 1]) > weaponCard->getScope()) {
                                     throw std::invalid_argument("La distance entre vous et le joueur est trop grande !");
                                 }
+                                
+                                bool isParade = false;
+                                for (int i = 0; i < this->players[indexPlayer - 1]->getDeck().size(); i++) {
+                                    if (this->players[indexPlayer - 1]->getDeck()[i]->getType() == TypeCard::ACTION) {
+                                        ActionCard *actionCard = dynamic_cast<ActionCard*>(this->players[indexPlayer - 1]->getDeck()[i]);
+                                        
+                                        if (actionCard->getActionType() == TypeActionCard::PARADE) {
+                                            this->gameCardsDiscard.push_back(this->players[indexPlayer - 1]->getDeck()[i]);
+                                            this->players[indexPlayer - 1]->removeCardFromDeck(i);
+                                            delete actionCard;
+                                            
+                                            isParade = true;
 
-                                this->players[indexPlayer - 1]->HP = std::max(this->players[indexPlayer - 1]->HP - weaponCard->getDmg(), 0);
+                                            std::cout << "Parade : " << this->players[indexPlayer - 1]->getPseudo() << " a paré l'attaque !" << std::endl;
+                                            break;
+                                        }
+
+                                        delete actionCard;
+                                    }
+                                }
+
+                                if (!isParade) {
+                                    this->players[indexPlayer - 1]->HP = std::max(this->players[indexPlayer - 1]->HP - weaponCard->getDmg(), 0);
+                                }
+
                                 this->gameCardsDiscard.push_back(player->getDeck()[indexCard - 1]);
                                 player->removeCardFromDeck(indexCard - 1);
                                 delete weaponCard;
