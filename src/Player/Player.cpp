@@ -5,6 +5,10 @@ Player::Player(const std::string pseudo, const RoleCard &role, const CharacterCa
     this->HP = character.getMaxHP();
 }
 
+void Player::setDeck(std::vector<Card*> deck) {
+    this->deck = deck;
+}
+
 std::string Player::getPseudo() const {
     return this->pseudo;
 }
@@ -21,8 +25,12 @@ CharacterCard Player::getCharacterCard() const {
     return this->character;
 }
 
-void Player::setDeck(std::vector<Card*> deck) {
-    this->deck = deck;
+bool Player::isDown() {
+    if (this->HP <= 0 || this->deck.size() == 0) {
+        return true;
+    }
+
+    return false;
 }
 
 void Player::addCardToDeck(Card* card) {

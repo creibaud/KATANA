@@ -26,7 +26,8 @@ class Player {
         RoleCard getRoleCard() const;
         std::vector<Card*> getDeck() const;
         CharacterCard getCharacterCard() const;
-
+        
+        bool isDown();
         void addCardToDeck(Card* card);
         void removeCardFromDeck(int index);
 

@@ -426,12 +426,14 @@ void Game::attackPlayer(Player *player) {
                 while (true) {
                     try {
                         int indexCard;
+                        std::vector<int> possibleIndexCards;
                         std::cout << "Carte à jouer: " << std::endl;
                         
                         int nbWeapon = 0;
                         for (int i = 0; i < player->getDeck().size(); i++) {
                             if (player->getDeck()[i]->getType() == TypeCard::WEAPON) {
                                 std::cout << i + 1 << ": " << player->getDeck()[i]->getName() << std::endl;
+                                possibleIndexCards.push_back(i + 1);
                                 nbWeapon++;
                             }
                         }
@@ -444,8 +446,15 @@ void Game::attackPlayer(Player *player) {
                         std::cout << "Numéro de la carte: ";
                         std::cin >> indexCard;
 
-                        if (indexCard < 1 || indexCard > player->getDeck().size()) {
-                            throw std::invalid_argument("L'index doit être compris entre 1 et " + player->getDeck().size());
+                        if (std::find(possibleIndexCards.begin(), possibleIndexCards.end(), indexCard) == possibleIndexCards.end()) {
+                            std::string possibleIndexCardsString = "";
+                            for (int i = 0; i < possibleIndexCards.size(); i++) {
+                                possibleIndexCardsString += std::to_string(possibleIndexCards[i]);
+                                if (i != possibleIndexCards.size() - 1) {
+                                    possibleIndexCardsString += ", ";
+                                }
+                            }
+                            throw std::invalid_argument("L'index doit être compris dans " + possibleIndexCardsString);
                         }
                         
                         WeaponCard *weaponCard = dynamic_cast<WeaponCard*>(player->getDeck()[indexCard - 1]);
@@ -453,19 +462,28 @@ void Game::attackPlayer(Player *player) {
                         while (true) {
                             try {
                                 int indexPlayer;
+                                std::vector<int> possibleIndexPlayers;
                                 std::cout << "Joueur à attaquer: " << std::endl;
                                 
                                 for (int i = 0; i < this->players.size(); i++) {
-                                    if (this->players[i] != player) {
+                                    if (this->players[i] != player && !this->players[i]->isDown()) {
                                         std::cout << i + 1 << " " << this->players[i]->getPseudo() << " | HP = " << this->players[i]->HP << " | distance = " << this->calculDistance(player, this->players[i]) << std::endl;
+                                        possibleIndexPlayers.push_back(i + 1);
                                     }
                                 }
                                 
                                 std::cout << "Numéro du joueur: ";
                                 std::cin >> indexPlayer;
 
-                                if (indexPlayer < 1 || indexPlayer > this->players.size()) {
-                                    throw std::invalid_argument("L'index doit être compris entre 1 et " + this->players.size());
+                                if (std::find(possibleIndexPlayers.begin(), possibleIndexPlayers.end(), indexPlayer) == possibleIndexPlayers.end()) {
+                                    std::string possibleIndexPlayersString = "";
+                                    for (int i = 0; i < possibleIndexPlayers.size(); i++) {
+                                        possibleIndexPlayersString += std::to_string(possibleIndexPlayers[i]);
+                                        if (i != possibleIndexPlayers.size() - 1) {
+                                            possibleIndexPlayersString += ", ";
+                                        }
+                                    }
+                                    throw std::invalid_argument("L'index doit être compris dans " + possibleIndexPlayersString);
                                 }
                                 
                                 if (this->players[indexPlayer - 1] == player) {
@@ -513,15 +531,7 @@ int Game::calculDistance(Player *player, Player *playerTarget) {
     bool findPlayerTarget = false;
     int distanceClockwise = 0;
     for (int i = indexPlayer - this->players.begin() + 1; i < this->players.size(); i++) {
-        distanceClockwise++;
-        if (this->players[i] == playerTarget) {
-            findPlayerTarget = true;
-            break;
-        }
-    }
-
-    if (!findPlayerTarget) {
-        for (int i = 0; i < indexPlayer - this->players.begin(); i++) {
+        if (!this->players[i]->isDown()) {
             distanceClockwise++;
             if (this->players[i] == playerTarget) {
                 findPlayerTarget = true;
@@ -530,23 +540,39 @@ int Game::calculDistance(Player *player, Player *playerTarget) {
         }
     }
 
+    if (!findPlayerTarget) {
+        for (int i = 0; i < indexPlayer - this->players.begin(); i++) {
+            if (!this->players[i]->isDown()) {
+                distanceClockwise++;
+                if (this->players[i] == playerTarget) {
+                    findPlayerTarget = true;
+                    break;
+                }
+            }
+        }
+    }
+
     findPlayerTarget = false;
     int distanceCounterClockwise = 0;
 
     for (int i = indexPlayer - this->players.begin() - 1; i >= 0; i--) {
-        distanceCounterClockwise++;
-        if (this->players[i] == playerTarget) {
-            findPlayerTarget = true;
-            break;
+        if (!this->players[i]->isDown()) {
+            distanceCounterClockwise++;
+            if (this->players[i] == playerTarget) {
+                findPlayerTarget = true;
+                break;
+            }
         }
     }
 
     if (!findPlayerTarget) {
         for (int i = this->players.size() - 1; i > indexPlayer - this->players.begin(); i--) {
-            distanceCounterClockwise++;
-            if (this->players[i] == playerTarget) {
-                findPlayerTarget = true;
-                break;
+            if (!this->players[i]->isDown()) {
+                distanceCounterClockwise++;
+                if (this->players[i] == playerTarget) {
+                    findPlayerTarget = true;
+                    break;
+                }
             }
         }
     }
