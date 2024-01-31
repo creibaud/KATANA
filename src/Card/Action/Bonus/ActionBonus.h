@@ -1,6 +1,8 @@
 #ifndef ACTION_BONUS_H
 #define ACTION_BONUS_H
 
+#include <iostream>
+
 struct ActionBonus {
     void criDeGuerre();
     void daimyo();

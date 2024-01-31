@@ -502,6 +502,7 @@ void Game::attackPlayer(Player *player) {
                                         if (actionCard->getActionType() == TypeActionCard::PARADE) {
                                             this->gameCardsDiscard.push_back(this->players[indexPlayer - 1]->getDeck()[i]);
                                             this->players[indexPlayer - 1]->removeCardFromDeck(i);
+                                            actionCard->specialAction();
                                             delete actionCard;
                                             
                                             isParade = true;
