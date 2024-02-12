@@ -1,46 +1,46 @@
 #include "character.h"
 
-Charater::Charater(CharaterType type, int maxHP) : type(type), maxHP(maxHP) {}
+Character::Character(CharacterType type, int maxHP) : type(type), maxHP(maxHP) {}
 
-CharaterType Charater::getCharacterType() const
+CharacterType Character::getCharacterType() const
 {
     return this->type;
 }
 
-std::string Charater::getCharaterName() const
+std::string Character::getCharacterName() const
 {
     switch (this->type)
     {
-    case CharaterType::HANZO:
+    case CharacterType::HANZO:
         return "HANZO";
-    case CharaterType::USHIWAKA:
+    case CharacterType::USHIWAKA:
         return "USHIWAKA";
-    case CharaterType::CHIYOME:
+    case CharacterType::CHIYOME:
         return "CHIYOME";
-    case CharaterType::HIDEYOSHI:
+    case CharacterType::HIDEYOSHI:
         return "HIDEYOSHI";
-    case CharaterType::GINCHIYO:
+    case CharacterType::GINCHIYO:
         return "GINCHIYO";
-    case CharaterType::GOEMON:
+    case CharacterType::GOEMON:
         return "GOEMON";
-    case CharaterType::NOBUNAGA:
+    case CharacterType::NOBUNAGA:
         return "NOBUNAGA";
-    case CharaterType::TOMOE:
+    case CharacterType::TOMOE:
         return "TOMOE";
-    case CharaterType::IEYASU:
+    case CharacterType::IEYASU:
         return "IEYASU";
-    case CharaterType::BENKEI:
+    case CharacterType::BENKEI:
         return "BENKEI";
-    case CharaterType::MUSASHI:
+    case CharacterType::MUSASHI:
         return "MUSASHI";
-    case CharaterType::KOJIRO:
+    case CharacterType::KOJIRO:
         return "KOJIRO";
     default:
         return "Inconnu";
     }
 }
 
-int Charater::getMaxHP() const
+int Character::getMaxHP() const
 {
     return this->maxHP;
 }

@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum class CharaterType
+enum class CharacterType
 {
     HANZO,
     USHIWAKA,
@@ -19,16 +19,16 @@ enum class CharaterType
     KOJIRO
 };
 
-class Charater
+class Character
 {
     private:
-        CharaterType type;
+        CharacterType type;
         int maxHP;
     
     public:
-        Charater(CharaterType type, int maxHP);
-        CharaterType getCharacterType() const;
-        std::string getCharaterName() const;
+        Character(CharacterType type, int maxHP);
+        CharacterType getCharacterType() const;
+        std::string getCharacterName() const;
         int getMaxHP() const;
 };
 
