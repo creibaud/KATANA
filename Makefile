@@ -2,7 +2,7 @@ CC = g++
 CXXFLAGS = -std=c++20 -Wall -Wextra -Wpedantic -Werror -g
 LDFLAGS = 
 
-APP_NAME = chess
+APP_NAME = katana
 EXT = .cpp
 
 SRC_DIR = src
