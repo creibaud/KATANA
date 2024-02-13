@@ -1,6 +1,15 @@
 #include "player.h"
 
-Player::Player(Role &role, Character &character) : role(role), character(character) {}
+Player::Player(Role &role, Character &character, std::vector<Card*> &hand) : role(role), character(character), hand(hand) {
+    this->pseudo = "";
+    this->HP = this->character.getMaxHP();
+    this->honorPoints = 0;
+}
+
+void Player::setPseudo(std::string pseudo)
+{
+    this->pseudo = pseudo;
+}
 
 std::string Player::getPseudo() const
 {
@@ -17,7 +26,7 @@ Character &Player::getCharacter() const
     return this->character;
 }
 
-std::vector<Card*> Player::getHand() const
+std::vector<Card*> &Player::getHand() const
 {
     return this->hand;
 }
