@@ -6,6 +6,7 @@
 #include <random>
 #include <algorithm>
 #include <sstream>
+#include <cstdlib>
 
 class Game
 {
@@ -16,14 +17,20 @@ class Game
         std::vector<Player*> players;
         int nbPlayers;
 
+        int indexActualPlayer;
+
     public:
         Game();
+
         void init();
         void initNbPlayers();
         void initRoles();
         void initCharacters();
         void initCards();
         void initPlayers();
+
+        void showTurnCards();
+        void start();
 };
 
 #endif // GAME_H

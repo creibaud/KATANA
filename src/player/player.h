@@ -12,18 +12,18 @@ class Player
         std::string pseudo;
         Role &role;
         Character &character;
-        std::vector<Card*> &hand;
+        std::vector<Card*> *hand;
     
     public:
         int HP;
         int honorPoints;
 
-        Player(Role &role, Character &character, std::vector<Card*> &hand);
+        Player(Role &role, Character &character);
         void setPseudo(std::string pseudo);
         std::string getPseudo() const;
         Role &getRole() const;
         Character &getCharacter() const;
-        std::vector<Card*> &getHand() const;
+        std::vector<Card*> *getHand() const;
 };
 
 #endif // PLAYER_H

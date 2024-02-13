@@ -6,8 +6,10 @@ Game::Game()
     this->characters = new std::vector<Character*>();
     this->cards = std::vector<Card*>();
     this->players = std::vector<Player*>();
+    this->indexActualPlayer = 0;
 }
 
+// print l'ordre des joueurs
 void Game::init()
 {
     this->initNbPlayers();
@@ -15,6 +17,7 @@ void Game::init()
     this->initCharacters();
     this->initCards();
     this->initPlayers();
+    system("clear");
 }
 
 void Game::initNbPlayers()
@@ -236,8 +239,7 @@ void Game::initCards()
 void Game::initPlayers()
 {
     for (int i = 0; i < this->nbPlayers; i++) {
-        std::vector<Card*> hand = std::vector<Card*>();
-        this->players.push_back(new Player(*this->roles->back(), *this->characters->back(), hand));
+        this->players.push_back(new Player(*this->roles->back(), *this->characters->back()));
         this->roles->pop_back();
         this->characters->pop_back();
 
@@ -289,7 +291,7 @@ void Game::initPlayers()
         }
 
         for (int j = 0; j < nbCard; j++) {
-            this->players.at(i)->getHand().push_back(this->cards.back());
+            this->players.at(i)->getHand()->push_back(this->cards.back());
             this->cards.pop_back();
         }
     }
@@ -302,5 +304,55 @@ void Game::initPlayers()
         } else {
             (*it)->honorPoints = 4;
         }
+    }
+}
+
+void Game::showTurnCards()
+{
+    int i = 0;
+    while (i < this->nbPlayers) {
+        std::cout << this->players.at(i)->getPseudo() << " is " << this->players.at(i)->getRole().getRoleName() << " and has " << this->players.at(i)->getCharacter().getCharacterName() << std::endl;
+        std::cout << "His hand is: " << this->players.at(i)->getHand()->size() << std::endl;
+        for (std::vector<Card*>::iterator it = this->players.at(i)->getHand()->begin(); it != this->players.at(i)->getHand()->end(); it++) {
+            std::cout << (*it)->getCardName() << std::endl;
+        }
+
+        std::string userInputStr;
+
+        while (true)
+        {
+            try
+            {
+                std::cout << "Have you finished (y/n) ? ";
+                std::cin >> userInputStr;
+
+                if (userInputStr != "y" && userInputStr != "n")
+                {
+                    throw std::invalid_argument("Invalid input");
+                }
+                
+                break;
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+        }
+
+        if (userInputStr == "y") {
+            i++;
+        }
+
+        system("clear");
+    }
+}
+
+void Game::start()
+{
+    this->showTurnCards();
+    
+    while (true)
+    {
+        system("clear");
     }
 }
