@@ -24,6 +24,9 @@ class Player
         Role &getRole() const;
         Character &getCharacter() const;
         std::vector<Card*> *getHand() const;
+
+        bool isDown() const;
+        bool canBlock() const;
 };
 
 #endif // PLAYER_H

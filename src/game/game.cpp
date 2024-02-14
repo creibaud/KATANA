@@ -5,8 +5,11 @@ Game::Game()
     this->roles = new std::vector<Role*>();
     this->characters = new std::vector<Character*>();
     this->cards = std::vector<Card*>();
+    this->discards = std::vector<Card*>();
     this->players = std::vector<Player*>();
     this->indexActualPlayer = 0;
+    this->userInputStr = "";
+    this->userInputInt = -1;
 }
 
 // print l'ordre des joueurs
@@ -17,24 +20,20 @@ void Game::init()
     this->initCharacters();
     this->initCards();
     this->initPlayers();
-    system("clear");
 }
 
 void Game::initNbPlayers()
 {
-    std::string userInputStr;
-    int userInputInt;
-
     while (true)
     {
         try
         {
             std::cout << "Enter the number of players (4 to 7): ";
-            std::getline(std::cin, userInputStr);
+            std::getline(std::cin, this->userInputStr);
 
-            std::stringstream stream(userInputStr);
+            std::stringstream stream(this->userInputStr);
 
-            if (!(stream >> userInputInt) || userInputInt < 4 || userInputInt > 7)
+            if (!(stream >> this->userInputInt) || this->userInputInt < 4 || this->userInputInt > 7)
             {
                 throw std::invalid_argument("Invalid input");
             }
@@ -48,7 +47,7 @@ void Game::initNbPlayers()
         
     }
 
-    this->nbPlayers = userInputInt;
+    this->nbPlayers = this->userInputInt;
 }
 
 void Game::initRoles()
@@ -243,12 +242,10 @@ void Game::initPlayers()
         this->roles->pop_back();
         this->characters->pop_back();
 
-        std::string userInput;
-
         std::cout << "Enter the pseudo of player " << i + 1 << ": ";
-        std::cin >> userInput;
+        std::cin >> this->userInputStr;
 
-        this->players.at(i)->setPseudo(userInput);
+        this->players.at(i)->setPseudo(this->userInputStr);
     }
     delete this->roles;
 
@@ -309,24 +306,57 @@ void Game::initPlayers()
 
 void Game::showTurnCards()
 {
+    for (std::vector<Player*>::size_type i = 0; i < this->players.size(); i++) 
+    {
+        std::cout << i << ". " << this->players.at(i)->getPseudo();
+        if (i == 0) {
+            std::cout << " (Shogun)";
+        }
+        std::cout << std::endl;
+    }
+
+    while (true)
+    {
+        try
+        {
+            std::cout << "Have you finished (y/n) ? ";
+            std::cin >> this->userInputStr;
+
+            if (this->userInputStr != "y" && this->userInputStr != "n")
+            {
+                throw std::invalid_argument("Invalid input");
+            }
+            
+            if (this->userInputStr == "y")
+            {
+                break;
+            }
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+    }
+
+    system("clear");
+
     int i = 0;
     while (i < this->nbPlayers) {
         std::cout << this->players.at(i)->getPseudo() << " is " << this->players.at(i)->getRole().getRoleName() << " and has " << this->players.at(i)->getCharacter().getCharacterName() << std::endl;
         std::cout << "His hand is: " << this->players.at(i)->getHand()->size() << std::endl;
-        for (std::vector<Card*>::iterator it = this->players.at(i)->getHand()->begin(); it != this->players.at(i)->getHand()->end(); it++) {
+        for (std::vector<Card*>::iterator it = this->players.at(i)->getHand()->begin(); it != this->players.at(i)->getHand()->end(); it++) 
+        {
             std::cout << (*it)->getCardName() << std::endl;
         }
-
-        std::string userInputStr;
 
         while (true)
         {
             try
             {
                 std::cout << "Have you finished (y/n) ? ";
-                std::cin >> userInputStr;
+                std::cin >> this->userInputStr;
 
-                if (userInputStr != "y" && userInputStr != "n")
+                if (this->userInputStr != "y" && this->userInputStr != "n")
                 {
                     throw std::invalid_argument("Invalid input");
                 }
@@ -339,7 +369,8 @@ void Game::showTurnCards()
             }
         }
 
-        if (userInputStr == "y") {
+        if (this->userInputStr == "y") 
+        {
             i++;
         }
 
@@ -350,9 +381,361 @@ void Game::showTurnCards()
 void Game::start()
 {
     this->showTurnCards();
-    
+
     while (true)
     {
+        this->turn();
         system("clear");
     }
+}
+
+void Game::turn()
+{
+    Player *player = this->players.at(this->indexActualPlayer);
+    std::cout << "Turning " << player->getPseudo() << std::endl;
+    this->recoverHP();
+    this->pickCard(player, 2);
+    this->play();
+
+    std::cout << "Discard cards" << std::endl;
+    while (player->getHand()->size() > 7)
+    {
+        for (std::vector<Card*>::size_type i = 0; i < player->getHand()->size(); i++)
+        {
+            std::cout << i + 1 << ". " << player->getHand()->at(i)->getCardName() << std::endl;
+        }
+
+        while (true)
+        {
+            try
+            {
+                std::cout << "Enter the index of the card you want to discard: ";
+                std::getline(std::cin, this->userInputStr);
+
+                std::stringstream stream(this->userInputStr);
+
+                if (!(stream >> this->userInputInt) || this->userInputInt < 1 || this->userInputInt > static_cast<int>(player->getHand()->size()))
+                {
+                    throw std::invalid_argument("Invalid input");
+                }
+                
+                break;
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+        }
+
+        this->discardCard(player, player->getHand()->at(this->userInputInt - 1));
+
+    }
+    this->indexActualPlayer = (this->indexActualPlayer + 1) % this->nbPlayers;
+}
+
+void Game::recoverCards()
+{
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(this->discards.begin(), this->discards.end(), g);
+
+    for (std::vector<Card*>::iterator it = this->discards.begin(); it != this->discards.end(); it++)
+    {
+        this->cards.push_back(*it);
+    }
+    this->discards.clear();
+
+    for (std::vector<Player*>::iterator it = this->players.begin(); it != this->players.end(); it++)
+    {
+        (*it)->honorPoints--;
+    }
+}
+
+void Game::recoverHP()
+{
+    Player *player = this->players.at(this->indexActualPlayer);
+    if (player->HP <= 0)
+    {
+        player->HP = player->getCharacter().getMaxHP();
+    }
+}
+
+void Game::pickCard(Player *player, int nbCard)
+{
+    for (int i = 0; i < nbCard; i++)
+    {
+        if (this->cards.empty())
+        {
+            this->recoverCards();
+        }
+        player->getHand()->push_back(this->cards.back());
+        this->cards.pop_back();
+    }
+}
+
+void Game::play()
+{
+    while (true)
+    {
+        try
+        {
+            std::cout << "Enter the action you want to do (1. Attack, 2. Other): ";
+            std::getline(std::cin, this->userInputStr);
+
+            std::stringstream stream(this->userInputStr);
+
+            if (!(stream >> this->userInputInt) || this->userInputInt < 1 || this->userInputInt > 2)
+            {
+                throw std::invalid_argument("Invalid input");
+            }
+            
+            break;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+    }
+
+    if (this->userInputInt == 1)
+    {
+        std::cout << "Attack!" << std::endl;
+        this->attack();
+    }
+    else
+    {
+        std::cout << "Other action" << std::endl;
+    }
+}
+
+void Game::attack()
+{
+    Player *player = this->players.at(this->indexActualPlayer);
+    std::vector<int> *weapons = new std::vector<int>();
+    std::vector<int> *playersIndex = new std::vector<int>();
+
+    for (std::vector<Card*>::size_type i = 0; i < player->getHand()->size(); i++)
+    {
+        Card *card = player->getHand()->at(i);
+        if (card->getCardType() == CardType::WEAPON)
+        {
+            Weapon *weapon = dynamic_cast<Weapon*>(card);
+            std::cout << i + 1 << ". " << weapon->getCardName() << " dmg = "<< weapon->getDamage() << std::endl;
+            for (std::vector<Player*>::iterator it = this->players.begin(); it != this->players.end(); it++)
+            {
+                if ((*it) != player && this->calculateDistance((*it)) <= weapon->getRange()) {
+                    std::cout << "    > " << (*it)->getPseudo() << std::endl;
+                }
+            }
+            weapons->push_back(i + 1);
+        }
+    }
+
+    if (weapons->size() > 0) {
+        while (true)
+        {
+            try
+            {
+                std::cout << "Enter the index of the weapon you want to use: ";
+                std::getline(std::cin, this->userInputStr);
+
+                std::stringstream stream(this->userInputStr);
+
+                if (!(stream >> this->userInputInt) || std::find(weapons->begin(), weapons->end(), this->userInputInt) == weapons->end())
+                {
+                    throw std::invalid_argument("Invalid input");
+                }
+                
+                break;
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+        }
+
+        weapons->clear();
+        delete weapons;
+        system("clear");
+
+        int indexWeapon = this->userInputInt - 1;
+        Weapon *weapon = dynamic_cast<Weapon*>(player->getHand()->at(indexWeapon));
+
+        for (std::vector<Player*>::size_type i = 0; i < this->players.size(); i++)
+        {
+            if (this->calculateDistance(this->players.at(i)) <= weapon->getRange() && this->players.at(i) != player && !this->players.at(i)->isDown())
+            {
+                playersIndex->push_back(i + 1);
+            }
+        }
+
+        std::cout << "Players you can attack:" << std::endl;
+        for (std::vector<int>::iterator it = playersIndex->begin(); it != playersIndex->end(); it++)
+        {
+            std::cout << (*it) << ". " << this->players.at((*it) - 1)->getPseudo() << std::endl;
+        }
+
+        while (true)
+        {
+            try
+            {
+                std::cout << "Enter the index of the player you want to attack: ";
+                std::getline(std::cin, this->userInputStr);
+
+                std::stringstream stream(this->userInputStr);
+
+                if (!(stream >> this->userInputInt) || std::find(playersIndex->begin(), playersIndex->end(), this->userInputInt) == playersIndex->end())
+                {
+                    throw std::invalid_argument("Invalid input");
+                }
+                
+                break;
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+        }
+
+        playersIndex->clear();
+        delete playersIndex;
+        system("clear");
+
+        Player *playerTarget = this->players.at(this->userInputInt - 1);
+        std::cout << "Player " << playerTarget->getPseudo() << " has " << playerTarget->HP << "HP before" << std::endl;
+
+        if (playerTarget->canBlock()) {
+            std::cout << "Player " << playerTarget->getPseudo() << " can block" << std::endl;
+            
+            while (true)
+            {
+                try
+                {
+                    std::cout << "Do you want to use a parade (y/n) ? ";
+                    std::getline(std::cin, this->userInputStr);
+
+                    if (this->userInputStr != "y" && this->userInputStr != "n")
+                    {
+                        throw std::invalid_argument("Invalid input");
+                    }
+                    
+                    break;
+                }
+                catch(const std::exception& e)
+                {
+                    std::cerr << e.what() << '\n';
+                }
+            }
+
+            if (this->userInputStr == "y") 
+            {
+                for (std::vector<Card*>::size_type i = 0; i < playerTarget->getHand()->size(); i++) 
+                {
+                    if (playerTarget->getHand()->at(i)->getCardType() == CardType::ACTION) 
+                    {
+                        Action *action = dynamic_cast<Action*>(playerTarget->getHand()->at(i));
+                        if (action->getActionType() == ActionType::PARADE) 
+                        {
+                            this->discardCard(playerTarget, playerTarget->getHand()->at(i));
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                playerTarget->HP -= weapon->getDamage();
+            }
+        } else {
+            playerTarget->HP -= weapon->getDamage();
+        }
+
+        std::cout << "Player " << playerTarget->getPseudo() << " has " << playerTarget->HP << "HP after attack" << std::endl;
+        this->discardCard(player, player->getHand()->at(indexWeapon));
+    }
+    else
+    {
+        std::cout << "You don't have any weapon" << std::endl;
+    }
+
+    system("clear");
+}
+
+int Game::calculateDistance(Player *player)
+{
+    bool findPlayerTarget = false;
+    int distanceClockwise = 0;
+    
+    std::vector<Player*>::size_type indexDifferenceClockwise = this->indexActualPlayer - (this->players.begin() - this->players.begin());
+    for (std::vector<Player*>::size_type i = indexDifferenceClockwise + 1; i < this->players.size(); i++) 
+    {
+        if (!this->players.at(i)->isDown()) 
+        {
+            distanceClockwise++;
+            if (this->players.at(i) == player) 
+            {
+                findPlayerTarget = true;
+                break;
+            }
+        }
+    }
+
+    if (!findPlayerTarget) 
+    {
+        indexDifferenceClockwise = std::distance(this->players.begin(), this->players.begin() + this->indexActualPlayer);
+        for (std::vector<Player*>::size_type i = 0; i < indexDifferenceClockwise; i++) 
+        {
+            if (!this->players.at(i)->isDown()) 
+            {
+                distanceClockwise++;
+                if (this->players.at(i) == player) 
+                {
+                    findPlayerTarget = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    findPlayerTarget = false;
+    int distanceCounterClockwise = 0;
+
+    std::vector<Player*>::size_type indexDifferenceCounterClockwise = std::distance(this->players.begin(), this->players.begin() + this->indexActualPlayer);
+    for (std::vector<Player*>::size_type i = indexDifferenceCounterClockwise - 1; i < this->players.size(); i--) 
+    {
+        if (!this->players.at(i)->isDown()) 
+        {
+            distanceCounterClockwise++;
+            if (this->players.at(i) == player) 
+            {
+                findPlayerTarget = true;
+                break;
+            }
+        }
+    }
+
+    if (!findPlayerTarget) 
+    {
+        indexDifferenceCounterClockwise = this->indexActualPlayer - std::distance(this->players.begin(), this->players.end());
+        for (std::vector<Player*>::size_type i = this->players.size() - 1; i > indexDifferenceCounterClockwise; i--) 
+        {
+            if (!this->players.at(i)->isDown()) 
+            {
+                distanceCounterClockwise++;
+                if (this->players.at(i) == player) 
+                {
+                    findPlayerTarget = true;
+                    break;
+                }
+            }
+        }
+    }
+    
+    return std::min(distanceClockwise, distanceCounterClockwise);
+}
+
+void Game::discardCard(Player *player, Card *card)
+{
+    this->discards.push_back(card);
+    player->getHand()->erase(std::remove(player->getHand()->begin(), player->getHand()->end(), card), player->getHand()->end());
 }

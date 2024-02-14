@@ -31,3 +31,25 @@ std::vector<Card*> *Player::getHand() const
 {
     return this->hand;
 }
+
+bool Player::isDown() const
+{
+    return this->HP <= 0 || this->hand->empty();
+}
+
+bool Player::canBlock() const
+{
+    for (std::vector<Card*>::iterator it = this->hand->begin(); it != this->hand->end(); it++) 
+    {
+        if ((*it)->getCardType() == CardType::ACTION) 
+        {
+            Action *action = dynamic_cast<Action*>(*it);
+            if (action->getActionType() == ActionType::PARADE) 
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
