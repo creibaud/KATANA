@@ -264,9 +264,8 @@ void Game::initPlayers()
 
     std::rotate(this->players.begin(), this->players.begin() + indexShogun, this->players.end());
 
+    int nbCard;
     for (int i = 0; i < this->nbPlayers; i++) {
-        int nbCard;
-
         switch (i) {
             case 0:
                 nbCard = 4;
